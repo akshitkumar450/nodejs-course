@@ -34,6 +34,8 @@ const url = require('url')
 // console.log('reading files..');
 
 //  HTTP SERVER *******************************
+const data = fs.readFileSync(__dirname + '/dev-data/data.json', 'utf-8')
+const productData = JSON.parse(data)
 
 const srv = http.createServer((req, res) => {
     // console.log(req.url);
@@ -44,13 +46,21 @@ const srv = http.createServer((req, res) => {
         res.end('products page')
     } else if (pathName === '/api') {
         // accessing the json file 
-        fs.readFile(__dirname + '/dev-data/data.json', 'utf-8', (err, data) => {
-            const productData = JSON.parse(data)
-            res.writeHead(200, {
-                'Content-type': 'application/json'
-            })
-            res.end(data)
+
+        // fs.readFile(__dirname + '/dev-data/data.json', 'utf-8', (err, data) => {
+        //     const productData = JSON.parse(data)
+        //     res.writeHead(200, {
+        //         'Content-type': 'application/json'
+        //     })
+        //     res.end(data)
+        // })
+        
+        // we should read file only once..bcz when evr we hit this route file we read all the times which makes our code slow
+        res.writeHead(200, {
+            'Content-type': 'application/json'
         })
+        res.end(data)
+
     } else {
         // writeHead is used to  set status code
         res.writeHead(404, {
