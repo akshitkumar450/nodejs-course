@@ -4,8 +4,6 @@ const url = require('url')
 
 
 
-
-
 //  FILE SYSTEM *****************************
 
 // const text = fs.readFileSync(__dirname + '/txt/input.txt', 'utf-8')
@@ -44,14 +42,24 @@ const srv = http.createServer((req, res) => {
         res.end('overview page')
     } else if (pathName === '/products') {
         res.end('products page')
+    } else if (pathName === '/api') {
+        // accessing the json file 
+        fs.readFile(__dirname + '/dev-data/data.json', 'utf-8', (err, data) => {
+            const productData = JSON.parse(data)
+            res.writeHead(200, {
+                'Content-type': 'application/json'
+            })
+            res.end(data)
+        })
     } else {
         // writeHead is used to  set status code
         res.writeHead(404, {
-            'Content-type':'text/html'
+            'Content-type': 'text/html'
         })
         res.end(`<h2>${req.url} could not found</h2>`)
     }
 })
+
 srv.listen(8000, () => {
     console.log('server started');
 })
