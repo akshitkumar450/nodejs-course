@@ -20,7 +20,8 @@ function writefilepro(file, data) {
     })
 }
 
-// ## async await code 
+//************************************/
+//## consuming promises using async await **************************//
 
 //async function also returns a promise
 async function getDogpic() {
@@ -31,6 +32,7 @@ async function getDogpic() {
         // const res = await superagent.get(`https://dog.ceo/api/breed/${data}/images/random `)
         // console.log(res.body.message);
 
+        //get 3 dog pics at same time..
         const res1 = await superagent.get(`https://dog.ceo/api/breed/${data}/images/random `)
         const res2 = await superagent.get(`https://dog.ceo/api/breed/${data}/images/random `)
         const res3 = await superagent.get(`https://dog.ceo/api/breed/${data}/images/random `)
@@ -51,7 +53,11 @@ async function getDogpic() {
     // if a async function return something then it should be consume using then method bcz it retunrs a promise
     return 'three'
 }
+
+
 // general pattern consuming async fn is by usng IIFE
+
+//## accessing the async fn by async await  ******************/
 
 (async () => {
     try {
@@ -64,6 +70,7 @@ async function getDogpic() {
     }
 })()
 
+//## accessing the async fn by then and catch ******************/
 
 // console.log('one');
 // getDogpic()
@@ -75,12 +82,15 @@ async function getDogpic() {
 // console.log('two');
 
 
-// return a new promise before calling them ,,which can we used by chaining
+//************************************/
+//## consuming promises using then and catch **************************//
+
 
 // readfilepro(__dirname + '/dog.txt')
 //     .then(data => {
 //         console.log(data);
 //         //superagent return a promise
+        // return a new promise before calling them ,,which can we used by chaining
 //         return superagent.get(`https://dog.ceo/api/breed/${data}/images/random `)
 //     })
 //     .then(res => {
