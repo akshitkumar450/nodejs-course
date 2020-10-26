@@ -21,15 +21,26 @@ function writefilepro(file, data) {
 }
 
 // ## async await code 
+
+//async function also returns a promise
 async function getDogpic() {
     try {
         const data = await readfilepro(__dirname + '/dog.txt')
         console.log(data);
 
-        const res = await superagent.get(`https://dog.ceo/api/breed/${data}/images/random `)
-        console.log(res.body.message);
+        // const res = await superagent.get(`https://dog.ceo/api/breed/${data}/images/random `)
+        // console.log(res.body.message);
 
-        await writefilepro('async/dog-img.txt', res.body.message)
+        const res1 = await superagent.get(`https://dog.ceo/api/breed/${data}/images/random `)
+        const res2 = await superagent.get(`https://dog.ceo/api/breed/${data}/images/random `)
+        const res3 = await superagent.get(`https://dog.ceo/api/breed/${data}/images/random `)
+
+        const all = await Promise.all([res1, res2, res3])
+        const imgs = all.map(el => el.body.message)
+        console.log(imgs)
+
+        // await writefilepro('async/dog-img.txt', res.body.message)
+        await writefilepro('async/dog-img.txt', imgs.join('\n'))
         console.log('file written');
     }
     catch (err) {
@@ -40,19 +51,32 @@ async function getDogpic() {
     // if a async function return something then it should be consume using then method bcz it retunrs a promise
     return 'three'
 }
-console.log('one');
-getDogpic()
-    .then(data => {
-        console.log(data);
-    }).catch((err) => {
-        console.log("ERROR 💥");
-    })
-console.log('two');
+// general pattern consuming async fn is by usng IIFE
 
-//async function also returns a promise
+(async () => {
+    try {
+        console.log('one');
+        const data = await getDogpic()
+        console.log(data);
+        console.log('two');
+    } catch (err) {
+        console.log("ERROR 💥");
+    }
+})()
+
+
+// console.log('one');
+// getDogpic()
+//     .then(data => {
+//         console.log(data);
+//     }).catch((err) => {
+//         console.log("ERROR 💥");
+//     })
+// console.log('two');
 
 
 // return a new promise before calling them ,,which can we used by chaining
+
 // readfilepro(__dirname + '/dog.txt')
 //     .then(data => {
 //         console.log(data);
