@@ -1,8 +1,18 @@
-const fs = require('fs')
+const { rejects } = require('assert');
+const fs = require('fs');
+const { resolve } = require('path');
 const superagent = require('superagent')
-// superagent is used to make api call in node 
-//superagent returns a promise
-fs.readFile(__dirname + '/dog.txt', 'utf-8', (err, data) => {
+
+function readfilepro(file) {
+    return new Promise((resolve, reject) => {
+        fs.readFile(file, 'utf-8', (err, data) => {
+            if (err) reject('i could not find the file')
+            resolve(data)
+        })
+    })
+}
+
+readfilepro(__dirname + '/dog.txt').then(data => {
     console.log(data);
     superagent
         .get(`https://dog.ceo/api/breed/${data}/images/random `)
@@ -16,3 +26,4 @@ fs.readFile(__dirname + '/dog.txt', 'utf-8', (err, data) => {
             if (err) return console.log(err.message);
         })
 })
+
