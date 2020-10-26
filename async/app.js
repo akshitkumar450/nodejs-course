@@ -18,23 +18,42 @@ function writefilepro(file, data) {
         })
     })
 }
-// return a new promise before calling them ,,which can we used by chaining
-readfilepro(__dirname + '/dog.txt')
-    .then(data => {
+
+// ## async await code 
+async function getDogpic() {
+    try {
+        const data = await readfilepro(__dirname + '/dog.txt')
         console.log(data);
-        //superagent return a promise
-        return superagent.get(`https://dog.ceo/api/breed/${data}/images/random `)
-    })
-    .then(res => {
+
+        const res = await superagent.get(`https://dog.ceo/api/breed/${data}/images/random `)
         console.log(res.body.message);
-        // return a promise
-        return writefilepro('async/dog-img.txt', res.body.message)
-    })
-    .then(() => {
+
+        await writefilepro('async/dog-img.txt', res.body.message)
         console.log('file written');
-    })
-    .catch(err => {
-        if (err) return console.log(err);
-    })
+    }
+    catch (err)  {
+         console.log(err);
+    }
+}
+getDogpic()
+
+// return a new promise before calling them ,,which can we used by chaining
+// readfilepro(__dirname + '/dog.txt')
+//     .then(data => {
+//         console.log(data);
+//         //superagent return a promise
+//         return superagent.get(`https://dog.ceo/api/breed/${data}/images/random `)
+//     })
+//     .then(res => {
+//         console.log(res.body.message);
+//         // return a promise
+//         return writefilepro('async/dog-img.txt', res.body.message)
+//     })
+//     .then(() => {
+//         console.log('file written');
+//     })
+//     .catch(err => {
+//         return console.log(err);
+//     })
 
 
