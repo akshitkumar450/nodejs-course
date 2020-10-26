@@ -1,7 +1,6 @@
 const fs = require('fs');
 const http = require('http')
 const url = require('url');
-const { hello } = require('./modules/changeProductData.js');
 const changeProductData=require('./modules/changeProductData')
 
 //  FILE SYSTEM *****************************
@@ -34,14 +33,18 @@ const changeProductData=require('./modules/changeProductData')
 // console.log('reading files..');
 
 //  HTTP SERVER *******************************
+
+// ## read all the templates files
 const tempOverview = fs.readFileSync(__dirname + '/templates/template-overview.html', 'utf-8')
 const tempCard = fs.readFileSync(__dirname + '/templates/template-card.html', 'utf-8')
 const tempProduct = fs.readFileSync(__dirname + '/templates/template-product.html', 'utf-8')
 
+// ## read json file
 const data = fs.readFileSync(__dirname + '/dev-data/data.json', 'utf-8')
-
-// array of all the products
+// return an array of all the products
 const productDataObj = JSON.parse(data)
+
+//## function to change the templates place holder which we have set own
 
 // function changeProductData(temp, product) {
 //     let output = temp.replace(/{product name}/g, product.productName)
@@ -65,12 +68,15 @@ const srv = http.createServer((req, res) => {
     // console.log(url.parse(req.url, true));
 
     //destructing syntax
+    // it gives all info about the path
     const { pathname, query } = url.parse(req.url, true)
 
     if (pathname === '/' || pathname === '/overview') {
         res.writeHead(200, { 'Content-type': 'text/html' })
         //join is used to convert an array to string
+        // cardHtml is  a string 
         const cardHtml = productDataObj.map(el => changeProductData(tempCard, el)).join('')
+        // console.log(cardHtml);
         const output = tempOverview.replace(/{card holder}/g, cardHtml)
         res.end(output)
 
@@ -82,7 +88,6 @@ const srv = http.createServer((req, res) => {
     }
     else if (pathname === '/api') {
         // accessing the json file 
-
         // we should read file only once..bcz when evr we hit this route file we read all the times which makes our code slow
         res.writeHead(200, {
             'Content-type': 'application/json'

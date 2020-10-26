@@ -1,5 +1,5 @@
-function changeProductData(temp, product) {
-    let output = temp.replace(/{product name}/g, product.productName)
+function changeProductData(template, product) {
+    let output = template.replace(/{product name}/g, product.productName)
     output = output.replace(/{price}/g, product.price)
     output = output.replace(/{qty}/g, product.quantity)
     output = output.replace(/{product place}/g, product.from)
@@ -11,6 +11,7 @@ function changeProductData(temp, product) {
     if (!product.organic)
         output = output.replace(/{not-organic}/g, 'not-organic')
     return output
+
 }
 
 
