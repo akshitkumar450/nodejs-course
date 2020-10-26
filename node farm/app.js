@@ -1,8 +1,8 @@
 const fs = require('fs');
 const http = require('http')
-const url = require('url')
-
-
+const url = require('url');
+const { hello } = require('./modules/changeProductData.js');
+const changeProductData=require('./modules/changeProductData')
 
 //  FILE SYSTEM *****************************
 
@@ -43,23 +43,20 @@ const data = fs.readFileSync(__dirname + '/dev-data/data.json', 'utf-8')
 // array of all the products
 const productDataObj = JSON.parse(data)
 
-function changeProductData(temp, product) {
-    let output = temp.replace(/{product name}/g, product.productName)
-    output = output.replace(/{price}/g, product.price)
-    output = output.replace(/{qty}/g, product.quantity)
-    output = output.replace(/{product place}/g, product.from)
-    output = output.replace(/{nutrients}/g, product.nutrients)
-    output = output.replace(/{description}/g, product.description)
-    output = output.replace(/{Id}/g, product.id)
-    output = output.replace(/{image}/g, product.image)
+// function changeProductData(temp, product) {
+//     let output = temp.replace(/{product name}/g, product.productName)
+//     output = output.replace(/{price}/g, product.price)
+//     output = output.replace(/{qty}/g, product.quantity)
+//     output = output.replace(/{product place}/g, product.from)
+//     output = output.replace(/{nutrients}/g, product.nutrients)
+//     output = output.replace(/{description}/g, product.description)
+//     output = output.replace(/{Id}/g, product.id)
+//     output = output.replace(/{image}/g, product.image)
 
-    if (!product.organic)
-        output = output.replace(/{not-organic}/g, 'not-organic')
-
-    return output
-}
-
-
+//     if (!product.organic)
+//         output = output.replace(/{not-organic}/g, 'not-organic')
+//     return output
+// }
 
 const srv = http.createServer((req, res) => {
     // console.log(req.url);
