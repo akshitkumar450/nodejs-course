@@ -1,6 +1,4 @@
-const { rejects } = require('assert');
 const fs = require('fs');
-const { resolve } = require('path');
 const superagent = require('superagent')
 
 function readfilepro(file) {
@@ -12,18 +10,31 @@ function readfilepro(file) {
     })
 }
 
-readfilepro(__dirname + '/dog.txt').then(data => {
-    console.log(data);
-    superagent
-        .get(`https://dog.ceo/api/breed/${data}/images/random `)
-        .then(res => {
-            console.log(res.body.message);
-            fs.writeFile('dog-img.txt', res.body.message, (err) => {
-                console.log('file written');
-            })
+function writefilepro(file, data) {
+    return new Promise((resolve, reject) => {
+        fs.writeFile(file, data, (err) => {
+            if (err) reject(' could not write file')
+            resolve('file written')
         })
-        .catch(err => {
-            if (err) return console.log(err.message);
-        })
-})
+    })
+}
+// return a new promise before calling them ,,which can we used by chaining
+readfilepro(__dirname + '/dog.txt')
+    .then(data => {
+        console.log(data);
+        //superagent return a promise
+        return superagent.get(`https://dog.ceo/api/breed/${data}/images/random `)
+    })
+    .then(res => {
+        console.log(res.body.message);
+        // return a promise
+        return writefilepro('async/dog-img.txt', res.body.message)
+    })
+    .then(() => {
+        console.log('file written');
+    })
+    .catch(err => {
+        if (err) return console.log(err);
+    })
+
 
