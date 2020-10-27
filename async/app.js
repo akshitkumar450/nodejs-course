@@ -33,6 +33,7 @@ async function getDogpic() {
         // console.log(res.body.message);
 
         //get 3 dog pics at same time..
+        //superagent fn returns a promise ,so we can save them in a varible and after that we can consume it
         const res1 =  superagent.get(`https://dog.ceo/api/breed/${data}/images/random `)
         const res2 =  superagent.get(`https://dog.ceo/api/breed/${data}/images/random `)
         const res3 =  superagent.get(`https://dog.ceo/api/breed/${data}/images/random `)
