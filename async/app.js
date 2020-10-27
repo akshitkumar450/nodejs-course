@@ -33,14 +33,12 @@ async function getDogpic() {
         // console.log(res.body.message);
 
         //get 3 dog pics at same time..
-        const res1 = await superagent.get(`https://dog.ceo/api/breed/${data}/images/random `)
-        const res2 = await superagent.get(`https://dog.ceo/api/breed/${data}/images/random `)
-        const res3 = await superagent.get(`https://dog.ceo/api/breed/${data}/images/random `)
-
+        const res1 =  superagent.get(`https://dog.ceo/api/breed/${data}/images/random `)
+        const res2 =  superagent.get(`https://dog.ceo/api/breed/${data}/images/random `)
+        const res3 =  superagent.get(`https://dog.ceo/api/breed/${data}/images/random `)
         const all = await Promise.all([res1, res2, res3])
         const imgs = all.map(el => el.body.message)
         console.log(imgs)
-
         // await writefilepro('async/dog-img.txt', res.body.message)
         await writefilepro('async/dog-img.txt', imgs.join('\n'))
         console.log('file written');
