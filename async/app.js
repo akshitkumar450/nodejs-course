@@ -49,7 +49,7 @@ async function getDogpic() {
         // to catch a error from async function we should throw an error ,then only while consuming promise catch will extract error,otherwise not
         throw (err)
     }
-    // if a async function return something then it should be consume using then method bcz it retunrs a promise
+    // async function return something then it should be consume using then method bcz it retunrs a promise
     return 'three'
 }
 
@@ -89,7 +89,7 @@ async function getDogpic() {
 //     .then(data => {
 //         console.log(data);
 //         //superagent return a promise
-        // return a new promise before calling them ,,which can we used by chaining
+          // return a new promise before calling them ,,which can we used by chaining
 //         return superagent.get(`https://dog.ceo/api/breed/${data}/images/random `)
 //     })
 //     .then(res => {
@@ -101,7 +101,7 @@ async function getDogpic() {
 //         console.log('file written');
 //     })
 //     .catch(err => {
-//         return console.log(err);
+//         console.log(err);
 //     })
 
 
